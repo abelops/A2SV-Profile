@@ -1,0 +1,26 @@
+.animated-element {
+    width: 150px;
+    height: 150px;
+    background: lightblue;
+    border-radius: 31% 69% 60% 40% / 33% 27% 73% 67%;
+    animation: radiusAnimation 10s infinite alternate;
+    animation-timing-function: linear;
+  }
+  
+  @keyframes radiusAnimation {
+    0% {
+      border-radius: 31% 69% 60% 40% / 33% 27% 73% 67%;
+    }
+    25% {
+      border-radius: 70% 30% 60% 40% / 66% 56% 44% 34%;
+    }
+    50% {
+      border-radius: 70% 30% 76% 24% / 42% 78% 22% 58%;
+    }
+    75% {
+      border-radius: 37% 63% 41% 59% / 54% 78% 22% 46%;
+    }
+    100% {
+      border-radius: 11% 89% 71% 29% / 37% 37% 63% 63%;
+    }
+  }
