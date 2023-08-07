@@ -20,7 +20,7 @@ function IndividualPost({ params }: Props) {
         title: string;
         id: string;
       };
-    const [indPost, setIndPost] = useState<PostType | undefined>();
+    const [indPost, setIndPost] = useState();
     const router = useRouter()
     const id = params.id
     // const GetIndPost = async (): Promise<void> => {
