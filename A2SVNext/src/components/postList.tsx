@@ -39,7 +39,6 @@ function PostList() {
         }
 
       useEffect(()=>{
-        //   GetPosts();
           getPosts();
 
       },[])

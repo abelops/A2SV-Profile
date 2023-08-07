@@ -36,7 +36,7 @@ function IndividualPost({ params }: Props) {
     const GetIndPost = async (): Promise<void> =>{
         const docRef = doc(db, "posts", id);
         const data = await getDoc(docRef)
-        const newDat: PostType = {...data.data(), id: data.id}
+        const newDat = {...data.data(), id: data.id}
         console.log(newDat)
         setIndPost(newDat)
     }
