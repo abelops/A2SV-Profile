@@ -15,12 +15,12 @@ type Props = {
 function IndividualPost({ params }: Props) {
     const postCollection = collection(db, "posts");
     type PostType = {
+        id: string;
         body: string;
         userId: number;
         title: string;
-        id: string;
       };
-    const [indPost, setIndPost] = useState();
+    const [indPost, setIndPost] = useState<PostType | undefined>();
     const router = useRouter()
     const id = params.id
     // const GetIndPost = async (): Promise<void> => {
@@ -33,15 +33,16 @@ function IndividualPost({ params }: Props) {
     //     };
 
 
-    
+    const GetIndPost = async (): Promise<void> =>{
+        const docRef = doc(db, "posts", id);
+        const data = await getDoc(docRef)
+        let f = {...data.data()}
+        const newDat = {id, title: f.title, body: f.body, userId: f.userId};
+        console.log(newDat)
+        setIndPost(newDat)
+    }
+
     useEffect(()=>{
-        const GetIndPost = async (): Promise<void> =>{
-            const docRef = doc(db, "posts", id);
-            const data = await getDoc(docRef)
-            const newDat = {...data.data(), id: data.id}
-            console.log(newDat)
-            setIndPost(newDat)
-        }
         GetIndPost();
     },[])
 

@@ -32,13 +32,25 @@ function PostList() {
     //   };
 
     
-    useEffect(()=>{
-          const getPosts = async () =>{
-              const data = await getDocs(postCollection)
-              const newDat = data.docs.map((doc)=>({...doc.data(), id: doc.id}))
-              console.log(newDat) 
-              setPosts(newDat)
-          }
+      
+      const getPosts = async () => {
+        const data = await getDocs(postCollection);
+        const newDat = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        console.log(newDat);
+        let sth: PostType[] = newDat as PostType[];
+        const fin = sth.map((f) => {
+          let j = {
+            id: f.id,
+            title: f.title,
+            body: f.body,
+            userId: f.userId,
+          };
+          return j;
+        });
+        setPosts(fin);
+      };
+      useEffect(()=>{
+        //   GetPosts();
           getPosts();
 
       },[])
