@@ -31,14 +31,14 @@ function PostList() {
     //     }
     //   };
 
-        const getPosts = async () =>{
-            const data = await getDocs(postCollection)
-            const newDat = data.docs.map((doc)=>({...doc.data(), id: doc.id}))
-            console.log(newDat) 
-            setPosts(newDat)
-        }
-
-      useEffect(()=>{
+    
+    useEffect(()=>{
+          const getPosts = async () =>{
+              const data = await getDocs(postCollection)
+              const newDat = data.docs.map((doc)=>({...doc.data(), id: doc.id}))
+              console.log(newDat) 
+              setPosts(newDat)
+          }
           getPosts();
 
       },[])
