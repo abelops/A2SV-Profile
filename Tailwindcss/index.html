@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s linear 0.25s, opacity 0.25s;
+    }
+
+    .popup-content {
+      background-color: #fff;
+      max-width: 600px;
+      padding: 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .popup.active {
+      visibility: visible;
+      opacity: 1;
+      display: block;
+      transition-delay: 0s;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="flex w-full justify-center items-center min-h-screen bg-gray-100">
+    <div class="w-full px-4" id="cont">
+      <h1 class="text-3xl font-bold mb-6 w-full flex justify-center">Recipe App</h1>
+
+      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Recipe List -->
+        
+
+        <!-- Add more recipe items here -->
+
+      </div>
+
+      <!-- Recipe Details -->
+      <div class="rounded shadow hidden popup">
+        <div class="popup-content">
+          <h2 class="text-lg font-semibold mb-2">Pad See Ew</h2>
+          <img src="https://www.themealdb.com/images/media/meals/uuuspp1468263334.jpg" alt="Pad See Ew"
+            class="w-full h-64 object-cover mb-2">
+          <p class="mb-4">Mix Sauce in small bowl. Mince garlic into wok with oil. Place over high heat, when hot, add
+            chicken and Chinese broccoli stems, cook until chicken is light golden. Push to the side of the wok, crack
+            egg in and scramble. Don't worry if it sticks to the bottom of the wok - it will char and which adds
+            authentic flavour. Add noodles, Chinese broccoli leaves and sauce. Gently mix together until the noodles
+            are stained dark and leaves are wilted. Serve immediately!</p>
+          <button class="bg-blue-500 text-white py-2 px-4 rounded close-popup">Go Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const recipeList = document.querySelector('.grid');
+    const recipeDetails = document.querySelector('.rounded.shadow.hidden');
+    let recipe = []
+    let allRecipes = []
+    const popup = document.querySelector('.popup');
+    const popupContent = document.querySelector('.popup-content');
+    // Fetch recipe data from API
+    
+
+
+    const fetchRecipe = async (id) => {
+      try {
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+        const data = await response.json();
+        console.log(data)
+        recipe = data.meals[0];
+        allRecipes.push(recipe)
+
+        // Update recipe list item
+        const listItem = document.createElement('div');
+        listItem.classList.add('rounded', 'shadow');
+        listItem.innerHTML = `
+          <div class="p-4">
+            <h2 class="text-lg font-semibold mb-2 flex justify-center w-full">${recipe.strMeal}</h2>
+            <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}" class="w-full h-60 object-cover mb-2">
+            <div class="flex w-full justify-center">
+                <button class="bg-blue-500 text-white py-2 px-4 rounded" onclick="viewDetail(${id})">View Details</button>
+            </div>
+          </div>
+        `;
+        recipeList.appendChild(listItem);
+
+        // Update recipe details
+        const details = document.querySelector('.rounded.shadow.hidden');
+        details.innerHTML = `
+          <div class="p-4">
+            <h2 class="text-lg font-semibold mb-2">${recipe.strMeal}</h2>
+            <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}" class="w-full h-64 object-cover mb-2">
+            <p class="mb-4">${recipe.strInstructions}</p>
+            <button class="bg-blue-500 text-white py-2 px-4 rounded">Go Back</button>
+          </div>
+        `;
+      } catch (error) {
+        console.log('Error fetching recipe:', error);
+      }
+    };
+
+    function removePopup() {
+        document.body.style.cssText = "overflow-y: scroll;"
+        popup.classList.remove('active');
+    }
+    const viewDetail = (id)=>{
+        document.body.style.cssText = "overflow-y: hidden;"
+        console.log(recipe)
+        const curResp = allRecipes.filter((item)=>{
+            console.log(item.idMeal, id)
+            if(item.idMeal.toString() == id.toString()){
+                return item
+            }
+            // return item.idMeal === toString(id);
+        })[0]
+        console.log(curResp, allRecipes)
+        const details = document.querySelector('.rounded.shadow.hidden');
+        details.innerHTML = `
+        <div class="flex w-full justify-center items-center h-full">
+            <div class="p-4 w-full md:w-1/2 bg-white">
+                <h2 class="text-lg font-semibold mb-2">${curResp.strMeal}</h2>
+                <img src="${curResp.strMealThumb}" alt="${curResp.strMeal}" class="w-full h-64 object-cover mb-2">
+                <p class="mb-4">${curResp.strInstructions}</p>
+                <button class="bg-blue-500 text-white py-2 px-4 rounded" onclick="removePopup()">Go Back</button>
+            </div>
+        </div>
+        `;
+        // details.classList.remove('hidden');
+        popup.classList.add('active');
+    }
+    // Add event listeners to show/hide recipe details
+    const viewDetailsButtons = document.querySelectorAll('.rounded.shadow button');
+    const goBackButton = document.querySelector('.rounded.shadow.hidden button');
+    viewDetailsButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        recipeList.classList.add('hidden');
+        recipeDetails.classList.remove('hidden');
+      });
+    });
+
+    goBackButton.addEventListener('click', function() {
+      recipeList.classList.remove('hidden');
+      recipeDetails.classList.add('hidden');
+    });
+
+    // Show popup with recipe details
+    const showPopup = (recipe) => {
+    popupContent.innerHTML = `
+        <div class="p-4">
+        <h2 class="text-lg font-semibold mb-2">${recipe.strMeal}</h2>
+        <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}" class="w-full h-64 object-cover mb-2">
+        <p class="mb-4">${recipe.strInstructions}</p>
+        <button class="bg-blue-500 text-white py-2 px-4 rounded close-popup">Close</button>
+        </div>
+    `;
+    popup.classList.add('active');
+    };
+
+    // Close popup
+    const closePopup = () => {
+    popup.classList.remove('active');
+    };
+
+    // Add event listener to close button
+    const closeButton = popupContent.querySelector('.close-popup');
+    closeButton.addEventListener('click', closePopup);
+    // Fetch recipe on page load
+    for (let i = 52770; i < 52789; i++) {
+      fetchRecipe(i);
+    }
+  </script>
+</body>
+
+</html>
