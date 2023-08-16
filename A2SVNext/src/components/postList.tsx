@@ -3,10 +3,12 @@ import React, {useState, useEffect} from 'react'
 import { useRouter } from 'next/navigation';
 import {db}  from '../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
+import { useGetPostsQuery } from '@/store/features/posts-api';
 
 function PostList() {
     const router = useRouter()
     const postCollection = collection(db, "posts");
+    const getPosts  = useGetPostsQuery({});
 
     type PostType = {
         id: string;
@@ -17,43 +19,44 @@ function PostList() {
       
       const [posts, setPosts] = useState<PostType[] | undefined>();
       
-    //   const GetPosts = async (): Promise<void> => {
-    //     try {
-    //       const res = await fetch(`https://jsonplaceholder.typicode.com/posts?limit=6`);
-    //       if (res.ok) {
-    //         const data: PostType[] = await res.json();
-    //         setPosts(data);
-    //       } else {
-    //         throw new Error('Failed to fetch posts');
-    //       }
-    //     } catch (error) {
-    //       console.error('Error fetching posts:', error);
-    //     }
-    //   };
+      // const getPosts = async (): Promise<void> => {
+      //   try {
+      //     const res = await fetch(`http://localhost:3004/posts`);
+      //     console.log(res)
+      //     if (res.ok) {
+      //       const data: PostType[] = await res.json();
+      //       setPosts(data);
+      //     } else {
+      //       throw new Error('Failed to fetch posts');
+      //     }
+      //   } catch (error) {
+      //     console.error('Error fetching posts:', error);
+      //   }
+      // };
 
     
       
-      const getPosts = async () => {
-        const data = await getDocs(postCollection);
-        const newDat = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-        console.log(newDat);
-        let sth: PostType[] = newDat as PostType[];
-        const fin = sth.map((f) => {
-          let j = {
-            id: f.id,
-            title: f.title,
-            body: f.body,
-            userId: f.userId,
-          };
-          return j;
-        });
-        setPosts(fin);
-      };
-      useEffect(()=>{
-        //   GetPosts();
-          getPosts();
+      // const getPosts = async () => {
+      //   const data = await getDocs(postCollection);
+      //   const newDat = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      //   console.log(newDat);
+      //   let sth: PostType[] = newDat as PostType[];
+      //   const fin = sth.map((f) => {
+      //     let j = {
+      //       id: f.id,
+      //       title: f.title,
+      //       body: f.body,
+      //       userId: f.userId,
+      //     };
+      //     return j;
+      //   });
+      //   setPosts(fin);
+      // };
 
-      },[])
+
+      useEffect(()=>{        
+        setPosts(getPosts.data);
+      },[getPosts])
 
     return (
     <div>

@@ -1,0 +1,28 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "First post",
+      "body": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, inventore. Ad praesentium eligendi asperiores tempora quibusdam, ea nihil voluptates fuga similique earum inventore, magnam quis cupiditate itaque quaerat repellendus totam.",
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "title": "Second post",
+      "body": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, inventore. Ad praesentium eligendi asperiores tempora quibusdam, ea nihil voluptates fuga similique earum inventore, magnam quis cupiditate itaque quaerat repellendus totam.",
+      "userId": 1
+    },
+    {
+      "id": 3,
+      "title": "Third post",
+      "body": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, inventore. Ad praesentium eligendi asperiores tempora quibusdam, ea nihil voluptates fuga similique earum inventore, magnam quis cupiditate itaque quaerat repellendus totam.",
+      "userId": 2
+    },
+    {
+      "id": 4,
+      "title": "Fourth post",
+      "body": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, inventore. Ad praesentium eligendi asperiores tempora quibusdam, ea nihil voluptates fuga similique earum inventore, magnam quis cupiditate itaque quaerat repellendus totam.",
+      "userId": 3
+    }
+  ]
+}

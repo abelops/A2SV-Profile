@@ -1,25 +1,37 @@
 "use client"; 
 import { ChangeEvent, FormEvent, useState } from 'react';
-import app, { db } from '../../firebase';
-import { addDoc, collection, setDoc, doc } from 'firebase/firestore';
+// import app, { db } from '../../firebase';
+// import { addDoc, collection, setDoc, doc } from 'firebase/firestore';
+import { useAddPostMutation } from '@/store/features/posts-api';
+
+// import { addPost } from '@/store/features/todos-slice';
+
 function AddForm() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [addPost] = useAddPostMutation();
+  
+
+  // const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const data = {title, body: description}
+  //   try {
+  //       const postsRef = collection(db, 'posts');
+  //       const docRef = addDoc(postsRef, {
+  //           title,
+  //           body: description,
+  //           userId: Math.floor(Math.random() * 20) + 1
+  //       })
+  //       console.log("Document written with ID: ");
+  //     } catch (e) {
+  //       console.error("Error adding document: ", e);
+  //     }
+  // };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = {title, body: description}
-    try {
-        const postsRef = collection(db, 'posts');
-        const docRef = addDoc(postsRef, {
-            title,
-            body: description,
-            userId: Math.floor(Math.random() * 20) + 1
-        })
-        console.log("Document written with ID: ");
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
+    const data = {title, body: description, useId: Math.floor(Math.random()*100)}
+    addPost(data);
   };
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +43,7 @@ function AddForm() {
   };
 
   return (
+    
     <div className='flex justify-center'>
       <div className='w-full md:w-1/2 lg:w-1/3 bg-slate-200 px-10 py-10 flex justify-center'>
         <form method='post' onSubmit={handleSubmit} className='flex flex-col gap-4'>

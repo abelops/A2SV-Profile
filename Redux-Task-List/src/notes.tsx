@@ -54,7 +54,11 @@ const NoteList: React.FC = () => {
   const handleDeleteNote = (noteId: string) => {
     dispatch(deleteNoteAction(noteId));
   };
-
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleAddNote();
+    }
+  };
   return (
     <div>
       <h2>My Notes</h2>
@@ -63,6 +67,7 @@ const NoteList: React.FC = () => {
         value={noteInput}
         style={{paddingTop: 10, paddingBottom: 11}}
         onChange={handleNoteInputChange}
+        onKeyDown={handleKeyPress}
       />
       {selectedNoteId ? (
         <button onClick={handleSaveNote} style={{borderRadius: 0,}}>Save</button>
